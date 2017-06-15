@@ -1,0 +1,45 @@
+== Neo4j Slack Import for Community Graph (and other uses)
+
+Currently uses a neo4j-shell script based on the Data Dump (Export) and Python for API import.
+
+Run the script and notebook server with these environment variables:
+
+.nb.sh
+----
+cat ../nb.sh 
+export NEO4J_URL=bolt://localhost
+export NEO4J_USER=neo4j
+export NEO4J_PASSWORD=****
+export SLACK_API_TOKEN=xoxp-**********-********-******-*****
+export SLACK_SUBDOMAIN=neo4j-users
+
+ipython notebook 
+----
+
+=== Approach
+
+* Download the data dump from: https://neo4j-users.slack.com/services/export
+* Extract files + channels into $NEO4J_HOME/import
+* Run cypher-shell with the import script
+
+=== Data Model
+
+Uses the Slack part of this data model:
+
+image::https://github.com/community-graph/documentation/raw/master/community_graph.png[]
+
+
+=== Queries
+
+TODO
+
+
+=== References
+
+* Neo4j-Users: http://neo4j-users.slack.com
+* Sign-up http://neo4j.com/slack
+* Public slack archive https://neo4j-users.slackarchive.io/announce
+
+////
+* Import user details from member-list-download
+////
