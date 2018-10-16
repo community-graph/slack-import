@@ -23,7 +23,8 @@ session.run("create index on :User(id);")
 
 importUsers = """
 WITH {base} + "/users.list?token=" + {token} as url
-call apoc.load.json(url) yield value.users as user
+call apoc.load.json(url) yield value
+with value.users as user
 MERGE (u:User {id:user.id}) ON CREATE SET u:Slack
 SET u += apoc.map.removeKeys(apoc.map.merge(user,user.profile),["team_id","tz_label","real_name_normalized","image_24","image_32","image_72","image_192","image_512","image_1024","profile","avatar_hash","fields","image_original"])
 MERGE (t:Team {id:user.team_id})
@@ -33,7 +34,8 @@ RETURN count(*);
 
 importChannels = """
 WITH {base} + "/channels.list?token=" + {token} as url
-call apoc.load.json(url) yield value.users as channel
+call apoc.load.json(url) yield value
+with value.users as channel
 merge (c:Channel {id:channel.id}) ON CREATE SET c.title = channel.name, c.created = toInt(channel.created), c.archived = channel.is_archived, c.general = channel.is_general, c:Slack, c.topic = channel.topic.value, c.purpose = channel.purpose.value
 MERGE (creator:User {id:channel.creator}) SET creator:Slack MERGE (creator)-[:CREATED]->(c)
 FOREACH (m IN  channel.members | MERGE (u:User {id:m}) SET u:Slack MERGE (u)-[:JOINED]->(c))
